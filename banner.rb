@@ -34,7 +34,7 @@ module AntiRaid
               event.message.delete
             rescue => exception
                 puts "[ERROR] Can't delete message by #{event.user.id} in #{event.server.id}: #{exception}"
-                @bot.user(@config[:owner]).pm("Error occured trying to delete message by <@#{event.user.id}> from #{event.server.name} (`#{event.server.id}`): ```ruby\n#{exception}`")
+                @bot.user(@config[:owner]).pm("Error occured trying to delete message by <@#{event.user.id}> from #{event.server.name} (`#{event.server.id}`): ```ruby\n#{exception}```")
                 next
             end
             msg = event.respond "#{event.user.mention} pls dont say mean words :(("

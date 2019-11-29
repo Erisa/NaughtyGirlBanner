@@ -25,11 +25,11 @@ module AntiRaid
     @bot.message do |event|
         next if @config[:servers][event.server.id].nil?
 
-        if (@config[:servers][event.server.id][:blacklist] == true && (Time.now - event.author.joined_at) < @config[:join_threshold] && @config[:blacklist].any? { |word| event.message.content.include?(word) })
+        if (@config[:servers][event.server.id][:blacklist] == true && (Time.now - event.author.joined_at) < @config[:join_threshold] && @config[:blacklist].any? { |word| event.message.content.downcase.include?(word.downcase) })
             event.message.delete rescue nil
             puts "[INFO] Crossbanning #{event.user.id}."
             self.crossban(event.user, event.server)
-        elsif @config[:servers][event.server.id][:hard_blacklist] == true && @config[:hard_blacklist].any? { |word| event.message.content.include?(word) }
+        elsif @config[:servers][event.server.id][:hard_blacklist] == true && @config[:hard_blacklist].any? { |word| event.message.content.downcase.include?(word.downcase) }
             begin 
               event.message.delete
             rescue => exception

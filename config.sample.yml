@@ -3,6 +3,10 @@
 :owner: 228574821590499329
 # In seconds.
 :join_threshold: 600 
+
+# dont use this
+:debug: true
+
 :servers:
 
   # Discord Bots

@@ -17,7 +17,7 @@ module AntiRaid
       if server.nil?
         puts "[WARN] - Server with ID #{sid} not recognised. Bot may not function as expected."
       else
-        puts "[INFO] - #{event.bot.server(sid).name} (#{sid})"
+        puts "[INFO] - #{event.bot.server(sid).name} (#{sid}) - #{server.members.count} Members"
       end
     }
   end
@@ -26,9 +26,9 @@ module AntiRaid
     next if @config[:servers][event.server.id].nil?
 
     begin
-      diff = Time.now - event.author.joined_at
+      diff = Time.now - event.user.on(event.server).joined_at
     rescue => exception
-      @bot.user(@config[:owner]).pm("Error occured trying to process join time for <@#{event.user.id}> in #{event.server.name} (`#{event.server.id}`): ```ruby\n#{exception}```")
+      @bot.user(@config[:owner]).pm("Error occured trying to process join time for <@#{event.user.id}> in #{event.server.name} (`#{event.server.id}`): ```ruby\n#{exception}```\nJoined at: `#{event.user.on(event.server).joined_at}`")
       diff = 9999999999
     end
 
@@ -74,6 +74,14 @@ module AntiRaid
       end
     }
   end
+  
+  # why did you enable this
+  if @config[:debug]
+    require 'pry'
+    @bot.run(true)
+    binding.pry
+  else 
+    @bot.run
+  end
 
-  @bot.run
 end

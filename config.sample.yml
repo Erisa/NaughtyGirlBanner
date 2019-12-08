@@ -21,6 +21,7 @@
 
   # Microsoft Community
   150662382874525696:
+    :name: "Microsoft Community"
     :blacklist: true
     :hard_blacklist: false
     :modroles:

@@ -6,8 +6,8 @@ module AntiRaid
 
   @config = YAML.load_file('config.yml')
 
-  count = @config[:servers].count
-  puts "[INFO] Loading with #{count} server#{'s' if count != 1} configured!"
+  @count = @config[:servers].count
+  puts "[INFO] Loading with #{@count} server#{'s' if @count != 1} configured!"
 
   @bot = Discordrb::Bot.new(token: @config[:token])
 
@@ -23,10 +23,18 @@ module AntiRaid
         puts " - #{server.members.count} Members"
       end
     end
+    @bot.watching = "over #{@count} servers."
   end
 
   @bot.message do |event|
     next if @config[:servers][event.server.id].nil?
+
+    if event.message.content == "ngb ping"
+      return_message = event.respond('Pinging..!')
+        ping = (return_message.id - event.message.id) >> 22
+	      choose = %w(i o e u y a)
+        return_message.edit("P#{choose.sample}ng! (`#{ping}ms`)")
+    end
 
     begin
       diff = Time.now - event.user.on(event.server).joined_at

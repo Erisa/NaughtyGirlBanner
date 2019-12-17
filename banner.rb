@@ -25,6 +25,7 @@ module AntiRaid
   end
 
   @bot.message do |event|
+    next if event.user.bot_account
     next if @config[:servers][event.server.id].nil?
 
     if event.message.content.start_with?('ngb ping')

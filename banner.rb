@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AntiRaid
   require 'discordrb'
   require 'yaml'
@@ -29,12 +27,38 @@ module AntiRaid
   @bot.message do |event|
     next if @config[:servers][event.server.id].nil?
 
-    if event.message.content == "ngb ping"
+    if event.message.content.start_with?("ngb ping")
       return_message = event.respond('Pinging..!')
         ping = (return_message.id - event.message.id) >> 22
 	      choose = %w(i o e u y a)
         return_message.edit("P#{choose.sample}ng! (`#{ping}ms`)")
     end
+
+    if event.message.content.start_with?("ngb eval")
+      next if event.user.id != @config[:owner]
+      args = event.message.content.delete_prefix('ngb eval ').split(' ')
+      begin
+        msg = event.respond "Evaluating..."
+        init_time = Time.now
+        result = eval args.join(' ')
+        result = result.to_s
+        if result.nil? || result == '' || result == ' ' || result == "\n"
+          msg.edit "Done! (No output)\nCommand took #{(Time.now - init_time)} seconds to execute!"
+          next
+        end
+        str = ''
+        if result.length >= 1984
+          str << "Your output exceeded the character limit! (`#{result.length - 1984}`/`1984`)"
+          str << "But hastebin support was not implemented. Sorry."
+        else
+          str << "Output: ```\n#{result}```Command took #{(Time.now - init_time)} seconds to execute!"
+        end
+        msg.edit(str)
+        rescue Exception => e
+        msg.edit("An error has occured!! ```ruby\n#{e}```\nCommand took #{(Time.now - init_time)} seconds to execute!")
+      end
+    end
+
 
     begin
       diff = Time.now - event.user.on(event.server).joined_at

@@ -54,7 +54,7 @@ module AntiRaid
           str << "Output: ```\n#{result}```Command took #{(Time.now - init_time)} seconds to execute!"
         end
         msg.edit(str)
-        rescue Exception => e
+        rescue StandardError => e
         msg.edit("An error has occured!! ```ruby\n#{e}```\nCommand took #{(Time.now - init_time)} seconds to execute!")
       end
     end

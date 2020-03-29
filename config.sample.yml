@@ -5,7 +5,7 @@
 :join_threshold: 600 
 
 # dont use this
-:debug: true
+:debug: false
 
 :servers:
   # Microsoft Community

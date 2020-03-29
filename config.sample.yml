@@ -8,17 +8,6 @@
 :debug: true
 
 :servers:
-
-  # Discord Bots
-  110373943822540800:
-    :blacklist: true
-    :hard_blacklist: true
-    :modroles:
-      # moderators
-    - 113379036524212224
-      # i want mod perms pls
-    - 366668416058130432
-
   # Microsoft Community
   150662382874525696:
     :name: "Microsoft Community"

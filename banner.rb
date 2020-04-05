@@ -28,7 +28,7 @@ module AntiRaid
     next if event.user.bot_account
     next if @config[:servers][event.server.id].nil?
 
-    if event.message.content.start_with?('ngb ping') && event.user.id != @config[:owner]
+    if event.message.content.start_with?('ngb ping') && event.user.id == @config[:owner]
       return_message = event.respond('Pinging..!')
       ping = (return_message.id - event.message.id) >> 22
       choose = %w[i o e u y a]
